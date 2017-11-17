@@ -5,12 +5,12 @@ rootDir = '/Users/istvan.boros/work/find_file'
 
 def walk_through_folders():
     for dirName, subdirList, fileList in os.walk(rootDir):
-        print('Found directory: %s' % dirName)
+       # print('Found directory: %s' % dirName)
         for fname in fileList:
-            print('\t%s' % fname)
+        #    print('\t%s' % fname)
             if fname.endswith('.feature'):
                 my_file = open_file(dirName, fname)
-                get_my_data(my_file)
+                get_my_data(my_file, fname)
     return dirName, fname
 
 
@@ -20,14 +20,12 @@ def open_file(dirName, fname):
     return my_file
 
 
-def get_my_data(my_file):
-    tags = []
+def get_my_data(my_file, fname):
+    tags = {fname: " "}
     for item in my_file:
-        for i in item:
-            while not i.startswith("@"):
-                tags.append(item)
-
-
+        while not item.lstrip().startswith("@"):
+            tags[fname].update(item)
+            break
     print(tags)
 
 
