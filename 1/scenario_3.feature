@@ -1,4 +1,4 @@
-Feature: feature name
+Feature: feature name file 3
   description
   further description
 

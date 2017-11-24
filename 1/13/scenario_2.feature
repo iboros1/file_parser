@@ -1,11 +1,12 @@
 @do+not run
-Feature: feature name
+Feature: feature name file 2
   description
   further description
 
   Background: some requirement of this test
     Given some setup condition
       And some other setup action
+
    @scr-adsa
   Scenario: some scenario
       Given some condition
