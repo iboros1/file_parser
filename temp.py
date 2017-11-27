@@ -1,64 +1,55 @@
-feature_dict = dict(
-    # file=s_file,
-    date=None,
-    feature_name=None,
-    name=None,
-    steps=None,
-    tags=None,
-    comments=None,
-    background=None,
-    all=[]
-)
-
+feature_list = list()
+BLOCK_MAX_SPACES = 3
 
 
 def open_file(dirPath, s_file):
     all_file = open(dirPath + '/' + s_file, 'r')
     my_file = all_file.readlines()
-    return my_file, s_file
+    return my_file
 
 
-def parse_feature(my_file):
+def parse_feature(feature_file):
     feature_ended = True
     feature = list()
-    for item in filter(lambda x: bool(x.strip()), my_file):
-        # check if start of feature
-        item = item.strip()
-        if feature_ended and item.count(' ') < 3:
+    # strip right to count left white spaces
+    for item in (x.rstrip() for x in feature_file if x.strip()):
+        if feature_ended and item.count(' ') < BLOCK_MAX_SPACES:
+            # start of feature
             feature_ended = False
-        if feature:
+            if feature:
                 process_feature(feature)
-                feature = []
-        elif item.count(' ') >= 3:
+                feature = list()
+        elif item.count(' ') >= BLOCK_MAX_SPACES:
             # consider feature as ended
             feature_ended = True
         feature.append(item.lstrip())
-    else:
-        # process last feature
+    else: # process last feature
         process_feature(feature)
 
 
 def process_feature(feature):
+    tags = list()
+    f_type = str()
+    body = str()
+    for item in feature:
+        if item.startswith('@'):
+            tags.append(item)
+            continue
+        elif item.startswith('Feature:'):
+            f_type = 'feature'
+        elif item.startswith('Background:'):
+            f_type = 'background'
+        elif item.startswith('Scenario:'):
+            f_type = 'scenario'
+        body += item
+    else:
+        if f_type == 'feature':
+            f_type = '{0}{1}'.format(','.join(tags), f_type)
+            tags = list()
+        feature_list.append(dict(
+            type=f_type,
+            body=body,
+            tags=','.join(tags)
+        ))
+    return feature_list
 
-    if feature is not None:
-        for item in feature:
-            if'Feature:' in str(item):
-                feature_dict['feature_name'] = feature
-            elif feature[0].startswith('#'):
-                feature_dict['comments'] = feature
-            elif feature[0].startswith('Background'):
-                feature_dict['background'] = feature
-            else:
-                feature_dict['all'].append(feature)
-    return feature_dict
-
-
-def run_all(dirPath, s_file):
-    my_file, s_file = open_file(dirPath, s_file)
-    feature = parse_feature(my_file)
-    dict =  process_feature(feature)
-    # print('>>>>>>>', my_file)
-    # print('......' , feature)
-    # print('----------', dict)
-    print(feature_dict)
-    return dict
