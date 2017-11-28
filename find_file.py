@@ -1,5 +1,5 @@
 import os
-from temp import run_all
+from temp import make_feature
 
 "START-CONFIG"
 
@@ -13,10 +13,10 @@ def walk_through_folders():
     for dirPath, dirName, fileName in os.walk(rootDir):
         for s_file in fileName:
             if s_file.endswith('.feature'):
-                features = run_all(dirPath, s_file)
-
-
-    return dirPath, s_file, features
+                feature_file = open(dirPath + '/' + s_file, 'r')
+                feature_list = make_feature(feature_file.readlines())
+                # ToDo: save feature to excel
+                print(feature_list)
 
 
 
