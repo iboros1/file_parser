@@ -1,9 +1,9 @@
 import os
-from temp import make_feature
+from feature_parser import make_feature
 
 "START-CONFIG"
 
-rootDir = '/Users/istvan.boros/work/find_file'
+rootDir = os.getcwd()
 
 "END-CONFIG "
 
@@ -17,8 +17,6 @@ def walk_through_folders():
                 feature_list = make_feature(feature_file.readlines())
                 # ToDo: save feature to excel
                 print(feature_list)
-
-
 
 
 def main():

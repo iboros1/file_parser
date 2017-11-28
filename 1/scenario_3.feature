@@ -1,6 +1,6 @@
-Feature: feature name file 3
-  description
-  further description
+  Feature: feature name file 3
+    description
+    further description
 
   Background: some requirement of this test
     Given some setup condition
