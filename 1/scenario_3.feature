@@ -6,13 +6,13 @@
     Given some setup condition
       And some other setup action
 
-   @scr-123
+  @scr-123
   Scenario: some scenario
       Given some condition
        When some action is taken
        Then some result is expected.
 
-   @scr-555
+  @scr-555
   Scenario: some other scenario
       Given some other condition
        When some action is taken
